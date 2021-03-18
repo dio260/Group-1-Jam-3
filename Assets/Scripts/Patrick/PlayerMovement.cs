@@ -47,7 +47,7 @@ public class PlayerMovement : MonoBehaviour
             gravity = jumpForce;
         }
 
-        controller.Move(movement.normalized * movementSpeed * Time.deltaTime);
+        controller.Move(transform.TransformDirection(movement.normalized) * movementSpeed * Time.deltaTime);
     }
     
     private void StopActions()

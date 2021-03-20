@@ -58,5 +58,6 @@ sysinfo.txt
 # Crashlytics generated file
 crashlytics-build.properties
 
-Library/SourceAssetDB
-Library/SourceAssetDB
+SourceAssetDB
+ArtifactDB
+*.log

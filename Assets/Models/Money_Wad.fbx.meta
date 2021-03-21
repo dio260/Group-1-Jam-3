@@ -9,6 +9,9 @@ ModelImporter:
   - first:
       74: -8566527925771182078
     second: Cylinder|IcosphereAction
+  - first:
+      74: -3525945734543133815
+    second: Cylinder|IcosphereAction (1)
   externalObjects:
   - first:
       type: UnityEngine:Material
@@ -43,8 +46,8 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: Cylinder|CylinderAction.002
-      takeName: Cylinder|CylinderAction.002
+      name: Cylinder|IcosphereAction (1)
+      takeName: Cylinder|IcosphereAction
       internalID: 0
       firstFrame: 0
       lastFrame: 239

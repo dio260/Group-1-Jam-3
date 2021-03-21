@@ -3964,7 +3964,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hitMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 1024
   maxDistance: 10
   debugRay: 1
 --- !u!1001 &1230850207

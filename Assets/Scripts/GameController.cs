@@ -34,4 +34,10 @@ public class GameController : MonoBehaviour
     {
         
     }
+
+    public void ActivateSound()
+    {
+        
+        firstItem = true;
+    }
 }

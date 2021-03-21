@@ -9,7 +9,12 @@ ModelImporter:
   - first:
       74: 7754784098696264941
     second: Cube|Door Open 2
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Material
+    second: {fileID: 2100000, guid: bd78e83fc3a424f48868f2f3a5f3f160, type: 2}
   materials:
     materialImportMode: 1
     materialName: 0

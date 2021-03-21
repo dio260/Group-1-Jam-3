@@ -5,23 +5,24 @@ using UnityEngine;
 
 public class DoorAnimation : MonoBehaviour
 {
+    public bool IsFinished { get; private set; }
     [SerializeField] private AnimationCurve curve;
     [SerializeField] private float timeInSeconds;
     [SerializeField] private bool invert;
     private Transform door, hinge;
-    private bool doorIsOpen, isFinished;
+    private bool doorIsOpen;
     private readonly object _lock = new object();
 
     private void Awake()
     {
         door = transform.Find("Door").Find("Cube");
         hinge = transform.Find("Pivot");
-        isFinished = true;
+        IsFinished = true;
     }
 
     public void ToggleDoor()
     {
-        if (isFinished) doorIsOpen = !doorIsOpen;
+        if (IsFinished) doorIsOpen = !doorIsOpen;
 
         if (doorIsOpen) StartCoroutine(OpenDoor());
         else StartCoroutine(CloseDoor());
@@ -29,19 +30,19 @@ public class DoorAnimation : MonoBehaviour
 
     private IEnumerator OpenDoor()
     {
-        if (!isFinished)
+        if (!IsFinished)
         {
             yield break;
         }
 
         Monitor.Enter(_lock);
 
-        if (!isFinished)
+        if (!IsFinished)
         {
             yield break;
         }
 
-        isFinished = false;
+        IsFinished = false;
 
         float time = 0;
 
@@ -66,24 +67,24 @@ public class DoorAnimation : MonoBehaviour
 
         Monitor.Exit(_lock);
 
-        isFinished = true;
+        IsFinished = true;
     }
 
     private IEnumerator CloseDoor()
     {
-        if (!isFinished)
+        if (!IsFinished)
         {
             yield break;
         }
 
         Monitor.Enter(_lock);
 
-        if (!isFinished)
+        if (!IsFinished)
         {
             yield break;
         }
 
-        isFinished = false;
+        IsFinished = false;
 
         float time = 0;
 
@@ -108,6 +109,6 @@ public class DoorAnimation : MonoBehaviour
 
         Monitor.Exit(_lock);
 
-        isFinished = true;
+        IsFinished = true;
     }
 }

@@ -16,6 +16,9 @@ public class GameController : MonoBehaviour
     private AudioSource bgm;
     private AudioSource dialogue;
 
+    public SkinnedMeshRenderer[] coworkers;
+
+    public MeshRenderer[] skins;
 
     void Start()
     {
@@ -26,7 +29,29 @@ public class GameController : MonoBehaviour
         fifthItem = false;
         sixthItem = false;
 
-        roomObjects.SetActive(false);
+        //roomObjects.SetActive(false);
+
+        coworkers = roomObjects.GetComponentsInChildren<SkinnedMeshRenderer>();
+
+        foreach(SkinnedMeshRenderer skin in coworkers)
+        {
+            skin.materials = new Material[6];
+            skin.materials[0] = null;
+            skin.materials[1] = null;
+            skin.materials[2] = null;
+            skin.materials[3] = null;
+            skin.materials[4] = null;
+            skin.materials[5] = null;
+            
+        }
+
+        skins = roomObjects.GetComponentsInChildren<MeshRenderer>();
+
+        foreach(MeshRenderer mesh in skins)
+        {
+            mesh.materials = new Material[1];
+            mesh.materials[0] = null;
+        }
     }
 
     // Update is called once per frame
@@ -39,5 +64,15 @@ public class GameController : MonoBehaviour
     {
         
         firstItem = true;
+    }
+
+    public void ShowRoom()
+    {
+        roomObjects.SetActive(true);
+    }
+
+    public void Colorize()
+    {
+
     }
 }

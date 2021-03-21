@@ -1,21 +1,14 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameController : MonoBehaviour
 {
-    /*
-    private bool firstItem;
-    private bool secondItem;
-    private bool thirdItem;
-    private bool fourthItem;
-    private bool fifthItem;
-    private bool sixthItem;
-    */
-
     public static GameController instance;
 
     public GameObject roomObjects;
+    public GameObject ActivateItems;
 
 
     [SerializeField]
@@ -35,7 +28,6 @@ public class GameController : MonoBehaviour
     public Material belt;
     public Material tie;
 
-
     private Material[] coworkerMats = new Material[6];
 
     private bool firstUpdate;
@@ -50,7 +42,30 @@ public class GameController : MonoBehaviour
     void Start()
     {
 
-        //roomObjects.SetActive(false);
+        coworkers = roomObjects.GetComponentsInChildren<SkinnedMeshRenderer>();
+
+        skins = roomObjects.GetComponentsInChildren<MeshRenderer>();
+
+        foreach (SkinnedMeshRenderer skin in coworkers)
+        {
+            skin.materials = new Material[6];
+            skin.materials[0] = null;
+            skin.materials[1] = null;
+            skin.materials[2] = null;
+            skin.materials[3] = null;
+            skin.materials[4] = null;
+            skin.materials[5] = null;
+
+        }
+
+        foreach (MeshRenderer mesh in skins)
+        {
+            mesh.materials = new Material[1];
+            mesh.materials[0] = null;
+        }
+
+        roomObjects.SetActive(false);
+        ActivateItems.SetActive(false);
 
         coworkerMats[0] = skinColor;
         coworkerMats[1] = pants;
@@ -59,53 +74,30 @@ public class GameController : MonoBehaviour
         coworkerMats[4] = belt;
         coworkerMats[5] = tie;
 
-        coworkers = roomObjects.GetComponentsInChildren<SkinnedMeshRenderer>();
-
-        skins = roomObjects.GetComponentsInChildren<MeshRenderer>();
-
-
+        StartCoroutine(UpdateMeshes());
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (!firstUpdate)
-        {
-            foreach (SkinnedMeshRenderer skin in coworkers)
-            {
-                skin.materials = new Material[6];
-                skin.materials[0] = null;
-                skin.materials[1] = null;
-                skin.materials[2] = null;
-                skin.materials[3] = null;
-                skin.materials[4] = null;
-                skin.materials[5] = null;
 
-            }
 
-            foreach (MeshRenderer mesh in skins)
-            {
-                mesh.materials = new Material[1];
-                mesh.materials[0] = null;
-            }
-            firstUpdate = true;
-        }
+    }
 
-        if (Input.GetKeyDown(KeyCode.Q))
-        {
-            Colorize();
-        }
+    public void ResetPositions()
+    {
+
     }
 
     public void ActivateSound()
     {
-
-
+        BGM.Play();
     }
 
     public void ShowRoom()
     {
         roomObjects.SetActive(true);
+        ActivateItems.SetActive(true);
     }
 
     public void Colorize()
@@ -126,7 +118,6 @@ public class GameController : MonoBehaviour
 
         }
 
-
     }
 
     public void StartAI()
@@ -134,8 +125,19 @@ public class GameController : MonoBehaviour
 
     }
 
-    public void WinGame()
+    public void EnableAttack()
     {
 
+    }
+
+    public void WinGame()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+    }
+
+    IEnumerator UpdateMeshes()
+    {
+        yield return new WaitForSeconds(1.5f);
+        
     }
 }

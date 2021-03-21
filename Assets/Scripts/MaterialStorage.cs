@@ -8,7 +8,7 @@ public class MaterialStorage : MonoBehaviour
     //[HideInInspector]
     public Material[] mat;
 
-    void Start()
+    void Awake()
     {
         mat = GetComponent<MeshRenderer>().materials;
     }

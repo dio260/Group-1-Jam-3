@@ -20,6 +20,16 @@ public class DoorAnimation : MonoBehaviour
         IsFinished = true;
     }
 
+    /*
+    void Update()
+    {
+        if(Input.GetKeyDown(KeyCode.F))
+        {
+            ToggleDoor();
+        }
+    }
+    */
+
     public void ToggleDoor()
     {
         if (IsFinished) doorIsOpen = !doorIsOpen;

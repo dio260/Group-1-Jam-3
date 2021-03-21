@@ -3189,6 +3189,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 6693108264119152793, guid: b61e9552cb598f74b8f635f53dfa65bf,
+        type: 3}
+      propertyPath: jumpForce
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 6693108264119152798, guid: b61e9552cb598f74b8f635f53dfa65bf,
         type: 3}
       propertyPath: m_Name
@@ -3249,8 +3254,7 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 6693108265414767251, guid: b61e9552cb598f74b8f635f53dfa65bf, type: 3}
+    m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b61e9552cb598f74b8f635f53dfa65bf, type: 3}
 --- !u!1001 &942855056
 PrefabInstance:
@@ -3957,14 +3961,14 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1211619351}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2b3603f1dae6ed64ab2c1c51b4a716f8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   hitMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 1024
   maxDistance: 10
   debugRay: 1
 --- !u!1001 &1230850207

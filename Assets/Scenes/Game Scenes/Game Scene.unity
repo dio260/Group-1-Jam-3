@@ -6362,6 +6362,21 @@ MonoBehaviour:
   ActivateItems: {fileID: 1884579423}
   BGM: {fileID: 1630006790}
   dialogue: {fileID: 1630006789}
+  dialogueLines:
+  - {fileID: 8300000, guid: 6cda34f2f5d109142af710ba45ef45a9, type: 3}
+  - {fileID: 8300000, guid: c19985777429423498ddd1f7b3812bb5, type: 3}
+  - {fileID: 8300000, guid: 2433bd2a34d06404195c7a815f580a92, type: 3}
+  - {fileID: 8300000, guid: 914db0cfd6e0bf5449fad45cc1b89efe, type: 3}
+  - {fileID: 8300000, guid: 58755e20587ec6f4ebd6c4ffc2b237ed, type: 3}
+  - {fileID: 8300000, guid: 207ddab91a6400f4982df160f212f4f8, type: 3}
+  - {fileID: 8300000, guid: a4564a12def86e745a9c963d3acdf321, type: 3}
+  - {fileID: 8300000, guid: bace7295ca88e9f4b8ad68adead26491, type: 3}
+  - {fileID: 8300000, guid: 77ebbc03ac5a8024299b799efac94b49, type: 3}
+  - {fileID: 8300000, guid: 4b31615bab611a6429f562495efba546, type: 3}
+  respawnLines:
+  - {fileID: 8300000, guid: d7187b62899222f4b92517f4d9564884, type: 3}
+  - {fileID: 8300000, guid: 25f9e59df4ff80d4e9bf29de2ed2cd33, type: 3}
+  - {fileID: 8300000, guid: d8d2a8f7bbb3b774d959274e43f3cc0d, type: 3}
   coworkers: []
   skins: []
   skinColor: {fileID: 4835078630258379571, guid: 43e67599b89623f48b0e34b127d88b33,

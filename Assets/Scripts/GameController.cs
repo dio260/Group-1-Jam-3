@@ -16,6 +16,12 @@ public class GameController : MonoBehaviour
     [SerializeField]
     private AudioSource dialogue;
 
+    [SerializeField]
+    private AudioClip[] dialogueLines;
+
+    [SerializeField]
+    private AudioClip[] respawnLines;
+
     public SkinnedMeshRenderer[] coworkers;
 
     public MeshRenderer[] skins;
@@ -41,6 +47,7 @@ public class GameController : MonoBehaviour
         {
             instance = this;
         }
+
     }
     void Start()
     {
@@ -77,14 +84,8 @@ public class GameController : MonoBehaviour
         coworkerMats[4] = belt;
         coworkerMats[5] = tie;
 
-        StartCoroutine(UpdateMeshes());
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-
+        StartCoroutine(StartUp());
+        dialogue.Play();
     }
 
     public void ResetPositions()
@@ -95,12 +96,17 @@ public class GameController : MonoBehaviour
     public void ActivateSound()
     {
         BGM.Play();
+        StopAllCoroutines();
+        dialogue.clip = dialogueLines[2];
+        dialogue.Play();
     }
 
     public void ShowRoom()
     {
         roomObjects.SetActive(true);
         ActivateItems.SetActive(true);
+        StopAllCoroutines();
+        StartCoroutine(BlueprintDialogue());
     }
 
     public void Colorize()
@@ -125,12 +131,15 @@ public class GameController : MonoBehaviour
 
     public void StartAI()
     {
-
+        dialogue.clip = dialogueLines[6];
+        dialogue.Play();
     }
 
     public void EnableAttack()
     {
 
+        StopAllCoroutines();
+        StartCoroutine(CashDialogue());
     }
 
     public void WinGame()
@@ -138,9 +147,31 @@ public class GameController : MonoBehaviour
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
 
-    IEnumerator UpdateMeshes()
+    IEnumerator StartUp()
     {
-        yield return new WaitForSeconds(1.5f);
-        
+        dialogue.clip = dialogueLines[0];
+        dialogue.Play();
+        yield return new WaitForSeconds(6.5f);
+        dialogue.clip = dialogueLines[1];
+        dialogue.Play();
     }
+
+    IEnumerator BlueprintDialogue()
+    {
+        dialogue.clip = dialogueLines[3];
+        dialogue.Play();
+        yield return new WaitForSeconds(2.5f);
+        dialogue.clip = dialogueLines[4];
+        dialogue.Play();
+    }
+
+    IEnumerator CashDialogue()
+    {
+        dialogue.clip = dialogueLines[8];
+        dialogue.Play();
+        yield return new WaitForSeconds(3.5f);
+        dialogue.clip = dialogueLines[9];
+        dialogue.Play();
+    }
+
 }

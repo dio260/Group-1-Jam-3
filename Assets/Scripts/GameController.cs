@@ -32,6 +32,9 @@ public class GameController : MonoBehaviour
 
     private bool firstUpdate;
 
+    [HideInInspector]
+    public bool colored;
+
     void Awake()
     {
         if (!instance)
@@ -117,7 +120,7 @@ public class GameController : MonoBehaviour
             }
 
         }
-
+        colored = true;
     }
 
     public void StartAI()

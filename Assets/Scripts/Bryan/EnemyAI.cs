@@ -8,12 +8,15 @@ public class EnemyAI : MonoBehaviour, IInteractable
 {
     public float StunTime { get; private set; }
     public bool IsStunned { get; private set; }
-    [SerializeField] private float maxDistance, minDistance, stunTime, stunCooldown, escapeDistance;
+    public float maxDistance;
+    [SerializeField] private float minDistance, stunTime, stunCooldown, escapeDistance;
     [SerializeField] private Transform target;
     private NavMeshAgent agent;
     private float distance, cooldown;
     private Action state;
     private GameObject text;
+
+    private Vector3 startPosition;
 
     // Start is called before the first frame update
     void Awake()
@@ -21,6 +24,11 @@ public class EnemyAI : MonoBehaviour, IInteractable
         text = transform.Find("Stunned Text").gameObject;
         agent = GetComponent<NavMeshAgent>();
         state = SitIdle;
+    }
+
+    void Start()
+    {
+        startPosition = transform.position;
     }
 
     // Update is called once per frame
@@ -65,15 +73,7 @@ public class EnemyAI : MonoBehaviour, IInteractable
 
     private void AttackPlayer()
     {
-        agent.destination = transform.position;
-
-        transform.LookAt(target);
-
-        if (distance > minDistance + .5f)
-        {
-            state = MoveTowardsPlayer;
-            return;
-        }
+        GameController.instance.ResetPositions();
     }
 
     private void Stunned()
@@ -104,7 +104,10 @@ public class EnemyAI : MonoBehaviour, IInteractable
 
     public void Interact()
     {
-        Stun();
+        if(GameController.instance.attackEnabled)
+        {
+            Stun();
+        }
     }
 
     public float GetStunTimeSetting()
@@ -115,5 +118,11 @@ public class EnemyAI : MonoBehaviour, IInteractable
     public Transform GetTarget()
     {
         return target;
+    }
+
+    public void ResetState()
+    {
+        transform.position = startPosition;
+        state = SitIdle;
     }
 }

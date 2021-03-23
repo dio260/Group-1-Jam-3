@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using TMPro;
 
 public class GameController : MonoBehaviour
 {
@@ -9,6 +10,8 @@ public class GameController : MonoBehaviour
 
     public GameObject roomObjects;
     public GameObject ActivateItems;
+
+    public GameObject finalItem;
 
 
     [SerializeField]
@@ -22,9 +25,20 @@ public class GameController : MonoBehaviour
     [SerializeField]
     private AudioClip[] respawnLines;
 
-    public SkinnedMeshRenderer[] coworkers;
+    private SkinnedMeshRenderer[] coworkers;
 
-    public MeshRenderer[] skins;
+    private MeshRenderer[] skins;
+
+    public GameObject player;
+    private Vector3 playerStart;
+
+    public TMP_Text playerHUD;
+    public GameObject enemyGroup;
+    private EnemyAI[] enemies;
+
+
+
+    public TMP_Text finalRoomText;
 
     [Header("NPC Materials")]
     public Material skinColor;
@@ -38,8 +52,12 @@ public class GameController : MonoBehaviour
 
     private bool firstUpdate;
 
+    private bool mute;
+
     [HideInInspector]
-    public bool colored;
+    public bool soundEnabled, objectsShown, colored, AIenabled, attackEnabled, last;
+
+    private System.Random random;
 
     void Awake()
     {
@@ -51,11 +69,24 @@ public class GameController : MonoBehaviour
     }
     void Start()
     {
+        mute = false;
+
+        random = new System.Random();
+
+        playerStart = player.transform.position;
+
+        colored = false;
+        attackEnabled = false;
+        soundEnabled = false;
+        objectsShown = false;
+        AIenabled = false;
+        last = false;
 
         coworkers = roomObjects.GetComponentsInChildren<SkinnedMeshRenderer>();
 
         skins = roomObjects.GetComponentsInChildren<MeshRenderer>();
 
+        //set textures to none
         foreach (SkinnedMeshRenderer skin in coworkers)
         {
             skin.materials = new Material[6];
@@ -74,8 +105,16 @@ public class GameController : MonoBehaviour
             mesh.materials[0] = null;
         }
 
+        enemies = enemyGroup.GetComponentsInChildren<EnemyAI>();
+        foreach (EnemyAI script in enemies)
+        {
+            script.enabled = false;
+        }
+
+
         roomObjects.SetActive(false);
         ActivateItems.SetActive(false);
+        finalItem.SetActive(false);
 
         coworkerMats[0] = skinColor;
         coworkerMats[1] = pants;
@@ -88,25 +127,105 @@ public class GameController : MonoBehaviour
         dialogue.Play();
     }
 
+    void Update()
+    {
+        string HUDText = "Click on certain items to pick them up.";
+
+        if (attackEnabled)
+        {
+            HUDText += "\nClick on coworkers to stun them temporarily.";
+        }
+
+        if (mute)
+        {
+            HUDText += "\n Press E to unmute dialogue";
+        }
+        else
+        {
+            HUDText += "\n Press E to mute dialogue";
+        }
+
+        HUDText += "\n Press Q to toggle this text on and off";
+
+        playerHUD.text = HUDText;
+
+        if (attackEnabled && colored && soundEnabled && AIenabled && attackEnabled && !last)
+        {
+            finalItem.SetActive(true);
+            foreach (EnemyAI script in enemies)
+            {
+                script.maxDistance *= 5;
+            }
+            last = false;
+        }
+
+        if (attackEnabled && colored && soundEnabled && AIenabled && attackEnabled)
+        {
+            finalRoomText.text = "You've gathered all the components and made the game whole! \nGrab the candy bar and enjoy it as you publish your game to the world.";
+
+        }
+        else
+        {
+            finalRoomText.text = "Looks like you still need to find a few more things to complete the game. \nTry searching high and low.";
+        }
+
+
+        if (Input.GetKeyDown(KeyCode.Q))
+        {
+            playerHUD.enabled = !playerHUD.enabled;
+        }
+
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            if (!mute)
+            {
+                StopAllCoroutines();
+                dialogue.Stop();
+            }
+            mute = !mute;
+        }
+    }
+
     public void ResetPositions()
     {
+        player.transform.position = playerStart;
+        foreach (EnemyAI script in enemies)
+        {
+            script.ResetState();
+        }
+        if (!mute)
+        {
+            StopAllCoroutines();
+            dialogue.clip = respawnLines[random.Next(3)];
+            dialogue.Play();
+        }
 
     }
 
     public void ActivateSound()
     {
         BGM.Play();
-        StopAllCoroutines();
-        dialogue.clip = dialogueLines[2];
-        dialogue.Play();
+        soundEnabled = true;
+        if (!mute)
+        {
+            StopAllCoroutines();
+            dialogue.clip = dialogueLines[2];
+            dialogue.Play();
+        }
+
     }
 
     public void ShowRoom()
     {
         roomObjects.SetActive(true);
         ActivateItems.SetActive(true);
-        StopAllCoroutines();
-        StartCoroutine(BlueprintDialogue());
+        objectsShown = true;
+        if (!mute)
+        {
+            StopAllCoroutines();
+            StartCoroutine(BlueprintDialogue());
+        }
+
     }
 
     public void Colorize()
@@ -127,19 +246,42 @@ public class GameController : MonoBehaviour
 
         }
         colored = true;
+
+        if (!mute)
+        {
+            StopAllCoroutines();
+            dialogue.clip = dialogueLines[7];
+            dialogue.Play();
+        }
+
     }
 
     public void StartAI()
     {
-        dialogue.clip = dialogueLines[6];
-        dialogue.Play();
+        foreach (EnemyAI script in enemies)
+        {
+            script.enabled = true;
+        }
+        AIenabled = true;
+
+        if (!mute)
+        {
+            StopAllCoroutines();
+            dialogue.clip = dialogueLines[6];
+            dialogue.Play();
+        }
+
     }
 
     public void EnableAttack()
     {
+        attackEnabled = true;
+        if(!mute)
+        {
+            StopAllCoroutines();
+            StartCoroutine(CashDialogue());
+        }
 
-        StopAllCoroutines();
-        StartCoroutine(CashDialogue());
     }
 
     public void WinGame()
@@ -158,10 +300,10 @@ public class GameController : MonoBehaviour
 
     IEnumerator BlueprintDialogue()
     {
-        dialogue.clip = dialogueLines[3];
-        dialogue.Play();
-        yield return new WaitForSeconds(2.5f);
         dialogue.clip = dialogueLines[4];
+        dialogue.Play();
+        yield return new WaitForSeconds(5f);
+        dialogue.clip = dialogueLines[5];
         dialogue.Play();
     }
 
